@@ -1,0 +1,65 @@
+# ------------------------------------
+# 1. Environment and Secrets
+# ------------------------------------
+# Local environment variables containing sensitive credentials
+.env
+.flaskenv
+.DS_Store
+
+# ------------------------------------
+# 2. Virtual Environments and Dependencies
+# ------------------------------------
+# Python Virtual Environments
+/venv
+/.venv
+env/
+/bin/
+/include/
+/lib/
+/lib64/
+
+# Dependency Caching
+# Pip freeze output
+requirements.txt.bak
+# Python build artifacts
+*.egg-info/
+.coverage
+.tox/
+
+# ------------------------------------
+# 3. Python Compiled Files
+# ------------------------------------
+# Compiled Python files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# ------------------------------------
+# 4. Django & Database Files
+# ------------------------------------
+# SQLite database files (Never commit production or development data)
+*.sqlite3
+*.db
+db.sqlite3
+
+# Django static and media files
+/static_collected/
+/staticfiles/
+/media/
+
+# ------------------------------------
+# 5. IDE and Editor Files
+# ------------------------------------
+# Visual Studio Code
+.vscode/
+
+# PyCharm / IntelliJ
+.idea/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim/Nano swap files
+*.swp
+*~
