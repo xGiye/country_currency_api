@@ -1,0 +1,1 @@
+web: gunicorn country_currency.wsgi:application
