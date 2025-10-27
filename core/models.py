@@ -15,9 +15,24 @@ class Country(models.Model):
     flag_url = models.URLField(max_length=255, blank=True, null=True)
     last_refreshed_at = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["name"], name="idx_country_name"),
+            models.Index(fields=["region"], name="idx_country_region"),
+            models.Index(fields=["currency_code"], name="idx_country_currency"),
+        ]
+        ordering = ["name"]
+
+
+
+
     def __str__(self):
         return self.name
-    
+
+
+
+
+
 class CacheStatus(models.Model):
     """Tracks the last time country data was refreshed."""
     last_refreshed_at = models.DateTimeField(null=True, blank=True)
