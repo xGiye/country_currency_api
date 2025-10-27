@@ -203,16 +203,28 @@ class CountryListView(generics.ListAPIView):
 # GET /countries/:name → retrieve a country by name
 # DELETE /countries/:name → delete a country
 # -----------------------------------------------------------
+
 class CountryDetailView(APIView):
     def get(self, request, name):
-        country = get_object_or_404(Country, name__iexact=name)
+        try:
+            country = Country.objects.get(name__iexact=name)
+        except Country.DoesNotExist:
+            return Response({"error": "Country not found"}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = CountrySerializer(country)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, name):
-        country = get_object_or_404(Country, name__iexact=name)
+        try:
+            country = Country.objects.get(name__iexact=name)
+        except Country.DoesNotExist:
+            return Response({"error": "Country not found"}, status=status.HTTP_404_NOT_FOUND)
+
         country.delete()
-        return Response({"message": f"{name} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": f"{name} deleted successfully."},
+            status=status.HTTP_204_NO_CONTENT
+        )
 
 
 # -----------------------------------------------------------
@@ -229,7 +241,7 @@ class CountryRefreshView(APIView):
             )
         except ExternalAPIFailureError as e:
             return Response(
-                {"error": "External API failure", "details": str(e)},
+                {"error": "External data source unavailable", "details": str(e)},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE
             )
         except Exception as e:
@@ -247,7 +259,7 @@ class CacheStatusView(APIView):
         status_obj = CacheStatus.objects.first()
         if not status_obj:
             return Response(
-                {"message": "No cache record found."},
+                {"error": "No cache record found."},
                 status=status.HTTP_404_NOT_FOUND
             )
         serializer = CacheStatusSerializer(status_obj)
